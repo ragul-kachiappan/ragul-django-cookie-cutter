@@ -29,3 +29,5 @@ This template will also include sample for DevOps in terraform, Ansible, CI, Doc
 3. Best practices (some opinionated tribal knowledge)
 - [ ] How to structure the project
 - [ ] Gotcha's to avoid
+- [ ] Git workflow for multiple environments
+- [ ] How to solve certain issues (merge conflicts, migration blockers, etc)
