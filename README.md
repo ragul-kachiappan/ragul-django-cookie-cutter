@@ -1,2 +1,31 @@
 # ragul-django-cookie-cutter
 My interpretation of Django template that can be used for projects
+This template will also include sample for DevOps in terraform, Ansible, CI, Docker, etc.
+
+# Things that need to added
+
+1. Basic Stuff
+- [ ] Basic environment setup with uv, mise, pre-commit stuff, etc
+- [ ] Basic Django setup
+- [ ] Linting, formatting
+- [ ] Terraform
+- [ ] Ansible playbook for configuration deployment steps
+- [ ] Github workflows for deployment, checks, tests, etc
+- [ ] Dockerfile with multistage setup
+- [ ] Dockercompose to include postgres, nginx, chromadb and redis
+
+2. Web App related
+- [ ] JWT setup
+- [ ] API Docs setup
+- [ ] JSON logging setup
+- [ ] Test suite
+- [ ] AWS SDK integration for S3 and other common services
+
+3. Advanced Web stuff
+- [ ] Background worker
+- [ ] Websocket
+- [ ] Caching
+
+3. Best practices (some opinionated tribal knowledge)
+- [ ] How to structure the project
+- [ ] Gotcha's to avoid
