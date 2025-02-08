@@ -6,6 +6,7 @@ This template will also include sample for DevOps in terraform, Ansible, CI, Doc
 
 1. Basic Stuff
 - [ ] Basic environment setup with uv, mise, pre-commit stuff, etc
+- [ ] dev containers setup for unified dev environment
 - [ ] Basic Django setup
 - [ ] Linting, formatting
 - [ ] Terraform
