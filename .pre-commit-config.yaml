@@ -32,8 +32,8 @@ repos:
     rev: v4.5.0
     hooks:
     -   id: check-yaml
-        files: ^(?!helm/).*\.ya?ml$    # Only check non-helm YAML files
-        exclude: ^helm/.*\.ya?ml$       # Explicitly exclude helm directory
+        files: ^(?!deployment/helm-chart/).*\.ya?ml$    # Only check non-helm YAML files
+        exclude: ^deployment/helm-chart/.*\.ya?ml$       # Explicitly exclude helm directory
     -   id: check-toml
     -   id: check-json
         exclude: ^.vscode/launch.json$
