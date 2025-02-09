@@ -169,3 +169,64 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Django & DRF specific
+media/
+static/
+staticfiles/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.mo
+*.pot
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+.terraform.lock.hcl
+
+# Docker
+.docker/
+docker-compose.override.yml
+*.env
+.env.*
+!.env.example
+
+# Kubernetes
+kubeconfig
+*.kubeconfig
+.kube/
+*.yaml.decoded
+
+# Apache2
+*.conf.bak
+*.conf.old
+*.conf.save
+sites-enabled/
+sites-available/
+
+
+# Logs and temp files
+*.swp
+*.swo
+*~
+.DS_Store
+
+# rough directory for local files
+rough
