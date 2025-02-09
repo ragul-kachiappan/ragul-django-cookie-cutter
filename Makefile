@@ -2,8 +2,8 @@
 .PHONY: help install install-dev migrate run test lint format clean build docker-build docker-run
 
 # Variables
-PYTHON = python3
-PIP = pip3
+PYTHON = python
+PIP = pip
 MANAGE = src/manage.py
 DOCKER_COMPOSE = docker-compose
 
@@ -23,7 +23,7 @@ migrate: ## Run database migrations
 	$(PYTHON) $(MANAGE) migrate
 
 run: ## Run development server
-	$(PYTHON) $(MANAGE) runserver 0.0.0.0:8000
+	$(PYTHON) $(MANAGE) runserver 0.0.0.0:8080
 
 test: ## Run tests
 	$(PYTHON) $(MANAGE) test tests/ apps/ --verbosity=2
@@ -34,14 +34,11 @@ coverage: ## Run tests with coverage report
 	coverage html
 
 lint: ## Run code linting
-	black --check src/
-	isort --check-only src/
-	flake8 src/
-	mypy src/
+	ruff check src/
 
 format: ## Format code
-	black src/
-	isort src/
+	ruff format src/
+
 
 clean: ## Remove cache files
 	find . -type d -name "__pycache__" -exec rm -rf {} +
