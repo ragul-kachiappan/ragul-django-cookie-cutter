@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "django>=5.1.6",
+    "eventlet>=0.39.0",
+    "gunicorn>=23.0.0",
 ]
 
 [dependency-groups]
