@@ -1,0 +1,233 @@
+---
+- name: Deploy Django Project
+  hosts: all
+  become: yes
+  vars:
+    #########################################
+    # Configuration (edit these for your app)
+    #########################################
+    home_dir: "{{ lookup('env','HOME') }}"
+    project_name: "your-django-project"         # e.g., "midalloy-poc-internal"
+    repo_url: "https://github.com/username/your-django-project.git"
+    branch: "main"                              # e.g., "feat/sse" or "main"
+    # Optional components (set to true if your project uses them)
+    optional_vector_db: false                   # true if your project preserves a vector DB folder
+    optional_sqlite_db: false                   # true if your project preserves a SQLite DB file
+    vector_db_dir: "vector_db"                  # relative path to the vector DB folder in the project
+    sqlite_db_file: "db.sqlite3"                # relative path to the SQLite DB file in the project
+    common_config_dir: "{{ home_dir }}/common_scripts"  # directory containing common configs (like .env, Apache files)
+    project_dir: "{{ home_dir }}/{{ project_name }}"     # where the repository will be cloned
+    venv_dir: "{{ project_dir }}/venv"                   # virtual environment directory
+    log_dir: "/var/log/{{ project_name }}"              # log directory for this project
+
+  tasks:
+    - name: "Install required system packages"
+      apt:
+        name:
+          - python3-pip
+          - apache2
+          - libapache2-mod-wsgi-py3
+          - ffmpeg
+          - wkhtmltopdf
+          - xvfb
+          - libpq-dev
+          - binutils
+          - libproj-dev
+          - gdal-bin
+          - libcurl4-openssl-dev
+          - libssl-dev
+        state: present
+        update_cache: yes
+
+    - name: "Create log directory"
+      file:
+        path: "{{ log_dir }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: '0750'
+
+    ###############################################
+    # Preserve Optional Data (if applicable)
+    ###############################################
+
+    - name: "Preserve vector DB directory if enabled"
+      when: optional_vector_db
+      block:
+        - name: "Remove old vector DB in home directory"
+          file:
+            path: "{{ home_dir }}/{{ vector_db_dir }}"
+            state: absent
+
+        - name: "Copy vector DB from project directory to home"
+          copy:
+            src: "{{ project_dir }}/{{ vector_db_dir }}"
+            dest: "{{ home_dir }}/"
+            remote_src: yes
+
+        - name: "Set safe permissions on vector DB (directories 755, files 644)"
+          file:
+            path: "{{ home_dir }}/{{ vector_db_dir }}"
+            mode: '0755'
+            recurse: yes
+
+    - name: "Preserve SQLite DB file if enabled"
+      when: optional_sqlite_db
+      block:
+        - name: "Remove old SQLite DB file in home directory"
+          file:
+            path: "{{ home_dir }}/{{ sqlite_db_file }}"
+            state: absent
+
+        - name: "Copy SQLite DB from project directory to home"
+          copy:
+            src: "{{ project_dir }}/{{ sqlite_db_file }}"
+            dest: "{{ home_dir }}/"
+            remote_src: yes
+
+        - name: "Set safe permissions on SQLite DB file"
+          file:
+            path: "{{ home_dir }}/{{ sqlite_db_file }}"
+            mode: '0644'
+
+    ###############################################
+    # Clone/Update the Repository
+    ###############################################
+
+    - name: "Clone repository from Git"
+      git:
+        repo: "{{ repo_url }}"
+        version: "{{ branch }}"
+        dest: "{{ project_dir }}"
+        force: yes
+
+    ###############################################
+    # Restore Preserved Data (if applicable)
+    ###############################################
+
+    - name: "Restore vector DB directory to project (if enabled)"
+      when: optional_vector_db
+      block:
+        - name: "Copy vector DB from home to project directory"
+          copy:
+            src: "{{ home_dir }}/{{ vector_db_dir }}"
+            dest: "{{ project_dir }}/{{ vector_db_dir }}"
+            remote_src: yes
+
+        - name: "Set safe permissions on restored vector DB"
+          file:
+            path: "{{ project_dir }}/{{ vector_db_dir }}"
+            mode: '0755'
+            recurse: yes
+
+    - name: "Restore SQLite DB file to project (if enabled)"
+      when: optional_sqlite_db
+      block:
+        - name: "Copy SQLite DB file from home to project directory"
+          copy:
+            src: "{{ home_dir }}/{{ sqlite_db_file }}"
+            dest: "{{ project_dir }}/{{ sqlite_db_file }}"
+            remote_src: yes
+
+        - name: "Set safe permissions on restored SQLite DB file"
+          file:
+            path: "{{ project_dir }}/{{ sqlite_db_file }}"
+            mode: '0644'
+
+    ###############################################
+    # Copy Environment/Configuration Files
+    ###############################################
+
+    - name: "Copy .env configuration file (if available)"
+      copy:
+        src: "{{ common_config_dir }}/.env"
+        dest: "{{ project_dir }}/.env"
+      ignore_errors: yes
+
+    ###############################################
+    # Set Up Python Virtual Environment
+    ###############################################
+
+    - name: "Create Python virtual environment"
+      command: python3 -m venv "{{ venv_dir }}"
+      args:
+        creates: "{{ venv_dir }}/bin/activate"
+      become: no
+
+    - name: "Upgrade pip in virtual environment"
+      pip:
+        virtualenv: "{{ venv_dir }}"
+        name: pip
+        state: latest
+      become: no
+
+    - name: "Install Python dependencies from requirements.txt if it exists"
+      pip:
+        requirements: "{{ project_dir }}/requirements.txt"
+        virtualenv: "{{ venv_dir }}"
+      become: no
+      ignore_errors: yes
+
+    ###############################################
+    # Run Django Management Commands
+    ###############################################
+
+    - name: "Collect static files"
+      command: "{{ venv_dir }}/bin/python manage.py collectstatic --noinput"
+      args:
+        chdir: "{{ project_dir }}"
+      become: no
+
+    - name: "Make migrations"
+      command: "{{ venv_dir }}/bin/python manage.py makemigrations"
+      args:
+        chdir: "{{ project_dir }}"
+      become: no
+
+    - name: "Apply migrations"
+      command: "{{ venv_dir }}/bin/python manage.py migrate"
+      args:
+        chdir: "{{ project_dir }}"
+      become: no
+
+    - name: "Check if feature_flags fixture exists"
+      stat:
+        path: "{{ project_dir }}/app/fixtures/feature_flags.json"
+      register: feature_flags_fixture
+
+    - name: "Load feature_flags fixture"
+      command: "{{ venv_dir }}/bin/python manage.py loaddata app/fixtures/feature_flags.json"
+      args:
+        chdir: "{{ project_dir }}"
+      when: feature_flags_fixture.stat.exists
+      become: no
+
+    ###############################################
+    # Configure Apache
+    ###############################################
+
+    - name: "Deploy Apache configuration: 000-default.conf"
+      copy:
+        src: "{{ common_config_dir }}/000-default.conf"
+        dest: "/etc/apache2/sites-enabled/000-default.conf"
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart Apache
+      ignore_errors: yes
+
+    - name: "Deploy Apache configuration: default-ssl.conf"
+      copy:
+        src: "{{ common_config_dir }}/default-ssl.conf"
+        dest: "/etc/apache2/sites-available/default-ssl.conf"
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart Apache
+      ignore_errors: yes
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted

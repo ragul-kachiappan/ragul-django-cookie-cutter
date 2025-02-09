@@ -1,0 +1,85 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+.eggs/
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+.coverage
+coverage.xml
+*.cover
+.pytest_cache/
+.tox/
+.env
+.venv
+venv/
+ENV/
+
+# Project specific directories
+docs/
+tests/
+.github/
+deployment/
+terraform/
+
+# Development and IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Local development settings
+src/config/settings/local.py
+local_settings.py
+
+# Media and static files (should be served separately in production)
+src/media/
+src/static/
+staticfiles/
+
+# Requirements (only copy the specific one we need)
+requirements/local.txt
+requirements/test.txt
+
+# Configuration and deployment files
+Makefile
+README.md
+*.md
+.pre-commit-config.yaml
+ruff.toml
+pyproject.toml
+
+# Deployment related
+deployment/docker/*
+!deployment/docker/Dockerfile
+!deployment/docker/Dockerfile.prod
+deployment/helm/
+deployment/server/
+*.kubeconfig
+kubeconfig
+
+# Terraform
+terraform/
+*.tfstate
+*.tfvars
+.terraform/
+
+# Test and documentation
+htmlcov/
+.coverage
+.pytest_cache/
+coverage.xml
+*.cover
