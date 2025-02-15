@@ -10,7 +10,7 @@ This template will also include sample for DevOps in terraform, Ansible, CI, Doc
 - [ ] Basic Django setup
 - [ ] Linting, formatting
 - [ ] Terraform
-- [ ] Ansible playbook for configuration deployment steps, cloud-init for initial VM setup (test it with multipass)
+- [ ] Ansible playbook for configuration deployment steps, [cloud-init](https://cloudinit.readthedocs.io/en/latest/index.html) for initial VM setup (test it with multipass)
 - [ ] Github workflows for deployment, checks, tests, etc
 - [ ] Dockerfile with multistage setup
 - [ ] Dockercompose to include postgres, nginx, chromadb and redis
