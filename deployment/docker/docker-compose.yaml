@@ -13,6 +13,7 @@ services:
       - web
 
   web:
+    image: web:latest
     build:
       context: ../..
       dockerfile: deployment/docker/Dockerfile

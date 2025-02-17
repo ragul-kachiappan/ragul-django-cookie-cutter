@@ -14,7 +14,7 @@ ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1
 
 # Copy only dependency files first
-COPY pyproject.toml uv.lock ./
+COPY ./pyproject.toml ./uv.lock ./
 
 # Install dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \
@@ -42,10 +42,10 @@ ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1
 
 # Copy application code
-COPY src ./src
-COPY pyproject.toml uv.lock ./
-COPY deployment/scripts/entrypoint.sh ./scripts/entrypoint.sh
-COPY deployment/scripts/startup.sh ./scripts/startup.sh
+COPY ./src ./src
+COPY ./pyproject.toml ./uv.lock ./
+COPY ./deployment/scripts/entrypoint.sh ./scripts/entrypoint.sh
+COPY ./deployment/scripts/startup.sh ./scripts/startup.sh
 
 # Make scripts executable
 RUN chmod +x ./scripts/*
