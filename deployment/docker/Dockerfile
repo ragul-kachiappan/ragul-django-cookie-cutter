@@ -18,7 +18,7 @@ COPY ./pyproject.toml ./uv.lock ./
 
 # Install dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-install-project
+    uv sync --frozen --group docker --no-dev --no-install-project
 
 # Start final image
 FROM python:3.12.8-slim
