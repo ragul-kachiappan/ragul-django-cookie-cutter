@@ -44,7 +44,8 @@ ENV PATH="/app/.venv/bin:$PATH" \
 # Copy application code
 COPY src ./src
 COPY pyproject.toml uv.lock ./
-COPY scripts ./scripts
+COPY deployment/scripts/entrypoint.sh ./scripts/entrypoint.sh
+COPY deployment/scripts/startup.sh ./scripts/startup.sh
 
 # Make scripts executable
 RUN chmod +x ./scripts/*

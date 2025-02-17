@@ -66,7 +66,7 @@ docker-build: ## Build Docker images
 	docker tag web myapp:latest
 
 docker-up: ## Start Docker containers
-	$(DOCKER_COMPOSE) -f deployment/docker/docker-compose.yaml up -d
+	$(DOCKER_COMPOSE) -f deployment/docker/docker-compose.yaml --env-file .env up -d
 
 docker-down: ## Stop Docker containers
 	$(DOCKER_COMPOSE) -f deployment/docker/docker-compose.yaml down
