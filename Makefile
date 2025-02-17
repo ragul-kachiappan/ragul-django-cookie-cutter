@@ -61,16 +61,18 @@ collectstatic: ## Collect static files
 
 # Docker commands
 docker-build: ## Build Docker images
-	$(DOCKER_COMPOSE) build
+	$(DOCKER_COMPOSE) -f deployment/docker/docker-compose.yaml build
+	docker tag web myapp:$(shell git rev-parse --short HEAD)
+	docker tag web myapp:latest
 
 docker-up: ## Start Docker containers
-	$(DOCKER_COMPOSE) up
+	$(DOCKER_COMPOSE) -f deployment/docker/docker-compose.yaml up -d
 
 docker-down: ## Stop Docker containers
-	$(DOCKER_COMPOSE) down
+	$(DOCKER_COMPOSE) -f deployment/docker/docker-compose.yaml down
 
 docker-logs: ## View Docker logs
-	$(DOCKER_COMPOSE) logs -f
+	$(DOCKER_COMPOSE) -f deployment/docker/docker-compose.yaml logs -f
 
 # Database commands
 db-backup: ## Backup database

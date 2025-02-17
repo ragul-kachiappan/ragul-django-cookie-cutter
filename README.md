@@ -1,14 +1,15 @@
 # ragul-django-cookie-cutter
-My interpretation of Django template that can be used for projects
+My interpretation of Django template that can be used for projects.
+AI native boilerplate to provide better context for AI tools like copilot, cursor, etc.
 This template will also include sample for DevOps in terraform, Ansible, CI, Docker, etc.
 
 # Things that need to added
 
 1. Basic Stuff
-- [ ] Basic environment setup with uv, mise, pre-commit stuff, etc
+- [x] Basic environment setup with uv, mise, pre-commit stuff, etc
 - [ ] dev containers setup for unified dev environment
-- [ ] Basic Django setup
-- [ ] Linting, formatting
+- [x] Basic Django setup
+- [x] Linting, formatting
 - [ ] Terraform
 - [ ] Ansible playbook for configuration deployment steps, [cloud-init](https://cloudinit.readthedocs.io/en/latest/index.html) for initial VM setup (test it with multipass)
 - [ ] Github workflows for deployment, checks, tests, etc
@@ -32,3 +33,6 @@ This template will also include sample for DevOps in terraform, Ansible, CI, Doc
 - [ ] Gotcha's to avoid
 - [ ] Git workflow for multiple environments
 - [ ] How to solve certain issues (merge conflicts, migration blockers, etc)
+
+4. AI assistance
+- [ ] Cursor project rules, style guide
