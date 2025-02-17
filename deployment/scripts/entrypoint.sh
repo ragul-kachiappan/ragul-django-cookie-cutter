@@ -39,6 +39,7 @@ wait_for_chroma() {
     echo "ChromaDB is up and running!"
 }
 
+
 # Wait for all dependencies
 wait_for_postgres
 wait_for_redis

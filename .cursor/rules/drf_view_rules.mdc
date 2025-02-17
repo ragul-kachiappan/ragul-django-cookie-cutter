@@ -1,0 +1,5 @@
+---
+description:
+globs: views.py, views/*.py
+---
+[WIP]
