@@ -1,3 +1,4 @@
+fail_fast: true
 default_language_version:
     python: python3.12
 exclude: |
@@ -23,7 +24,9 @@ repos:
     hooks:
     -   id: uv-lock
     -   id: uv-export
-        args: ["--frozen", "--no-hashes", "--output-file=requirements/requirements.txt"]
+        args: ["--frozen","--no-dev", "--no-hashes", "--output-file=requirements/requirements.txt"]
+    -   id: uv-export
+        args: ["--frozen", "--no-hashes", "--output-file=requirements/dev-requirements.txt"]
 -   repo: https://github.com/gruntwork-io/pre-commit
     rev: v0.1.23
     hooks:
