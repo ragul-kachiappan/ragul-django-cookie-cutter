@@ -30,7 +30,6 @@ ENV/
 docs/
 tests/
 .github/
-deployment/
 terraform/
 
 # Development and IDE files
@@ -60,7 +59,6 @@ README.md
 *.md
 .pre-commit-config.yaml
 ruff.toml
-pyproject.toml
 
 # Deployment related
 deployment/docker/*
