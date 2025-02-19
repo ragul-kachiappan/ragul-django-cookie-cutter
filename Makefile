@@ -4,6 +4,7 @@
 # Variables
 PYTHON = python
 PIP = pip
+UV = uv
 MANAGE = src/manage.py
 DOCKER_COMPOSE = docker-compose
 
@@ -11,11 +12,18 @@ help: ## Show this help message
 	@echo 'Usage:'
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-install: ## Install production dependencies
-	$(PIP) install -r src/requirements/production.txt
+pip-install: ## Install production dependencies
+	uv $(PIP) install -r src/requirements/requirements.txt
 
-install-dev: ## Install development dependencies
-	$(PIP) install -r src/requirements/local.txt
+pip-install-dev: ## Install development dependencies
+	uv $(PIP) install -r src/requirements/dev-requirements.txt
+	pre-commit install
+
+uv-sync: ## Sync dependencies
+	$(UV) sync
+
+setup-env: ## Setup environment
+	$(UV) sync
 	pre-commit install
 
 migrate: ## Run database migrations
