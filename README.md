@@ -18,6 +18,7 @@ This template will also include sample for DevOps in terraform, Ansible, CI, Doc
 - [ ] Optimization in nginx, gunicorn setup
 
 2. Web App related
+- [ ] Configure settings.py
 - [ ] JWT setup
 - [ ] API Docs setup
 - [ ] JSON logging setup
