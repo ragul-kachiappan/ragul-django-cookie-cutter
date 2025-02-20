@@ -10,7 +10,9 @@
 
 <details>
 <summary>Django</summary>
+
 - Logging
+
   - [Django docs](https://docs.djangoproject.com/en/5.1/topics/logging/)
   - [Python logging docs](https://docs.python.org/3/library/logging.html)
   - [django json logging](https://blog.rama.io/json-logging-with-django)
