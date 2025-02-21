@@ -7,7 +7,7 @@ This template will also include sample for DevOps in terraform, Ansible, CI, Doc
 
 1. Basic Stuff
 - [x] Basic environment setup with uv, mise, pre-commit stuff, etc
-- [ ] dev containers setup for unified dev environment
+- [ ] dev containers and devbox setup for unified dev environment
 - [x] Basic Django setup
 - [x] Linting, formatting
 - [ ] Terraform
@@ -16,6 +16,7 @@ This template will also include sample for DevOps in terraform, Ansible, CI, Doc
 - [x] Dockerfile with multistage setup
 - [x] Dockercompose to include postgres, nginx, chromadb and redis
 - [ ] Optimization in nginx, gunicorn setup
+- [ ] Migrate Makefile to Taskfile (taskfile seems easier)
 
 2. Web App related
 - [ ] Configure settings.py
